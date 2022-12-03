@@ -5,26 +5,40 @@ import { composeRef } from '../_utils/ref';
 import { omit } from '../_utils/omit';
 import { useMergedState } from '../_utils/hooks/useMergedState';
 
+import { ConfigContext } from '../config-provider';
+import SizeContext from '../config-provider/SizeContext';
 import { MotionThumb } from './MotionThumb';
 import { SegmentedOption } from './Option';
-import { normalizeOptions } from './utils';
+import { normalizeOptions, isSegmentedLabeledOptionWithIcon, } from './utils';
+import useStyle from './style';
 
 import type { SegmentedProps, SegmentedRawOption, } from './types';
 
 export const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
   (props, ref) => {
     const {
-      prefixCls = 'l-segmented',
-      direction,
+      prefixCls: customizePrefixCls,
       options,
       disabled,
       defaultValue,
       value,
+      block,
       onChange,
       className = '',
+      size: customSize = 'middle',
       motionName = 'thumb-motion',
       ...restProps
     } = props;
+
+    const { getPrefixCls, direction } = React.useContext(ConfigContext);
+    const prefixCls = getPrefixCls('segmented', customizePrefixCls);
+
+    // Style
+    const [wrapSSR, hashId] = useStyle(prefixCls);
+
+    // ===================== Size =====================
+    const size = React.useContext(SizeContext);
+    const mergedSize = customSize || size;
 
     const containerRef = React.useRef<HTMLDivElement>(null);
     const mergedRef = React.useMemo(
@@ -32,9 +46,27 @@ export const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
       [containerRef, ref],
     );
 
-    const segmentedOptions = React.useMemo(() => {
-      return normalizeOptions(options);
-    }, [options]);
+    // syntactic sugar to support `icon` for Segmented Item
+    const segmentedOptions = React.useMemo(
+      () =>
+        normalizeOptions(options.map((option) => {
+          if (isSegmentedLabeledOptionWithIcon(option)) {
+            // @ts-ignore
+            const { icon, label, ...restOption } = option;
+            return {
+              ...restOption,
+              label: (
+                <>
+                  <span className={`${prefixCls}-item-icon`}>{icon}</span>
+                  {label && <span>{label}</span>}
+                </>
+              ),
+            };
+          }
+          return option;
+        })),
+      [options, prefixCls],
+    );
 
     const [rawValue, setRawValue] = useMergedState(segmentedOptions[0]?.value, {
       value,
@@ -59,15 +91,19 @@ export const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
 
     const divProps = omit(restProps, ['children']);
 
-    return (
+    return wrapSSR(
       <div
         {...divProps}
         className={classNames(
           prefixCls,
           {
+            [`${prefixCls}-block`]: block,
+            [`${prefixCls}-sm`]: mergedSize === 'small',
+            [`${prefixCls}-lg`]: mergedSize === 'large',
             [`${prefixCls}-rtl`]: direction === 'rtl',
             [`${prefixCls}-disabled`]: disabled,
           },
+          hashId,
           className,
         )}
         ref={mergedRef}
@@ -111,3 +147,7 @@ export const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
     )
   }
 )
+
+if (process.env.NODE_ENV !== 'production') {
+  Segmented.displayName = 'Segmented';
+}

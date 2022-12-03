@@ -1,4 +1,11 @@
-import type { ThumbReact, SegmentedOptions, SegmentedLabeledOption } from './types';
+import type {
+  ThumbReact,
+  SegmentedOptions,
+  SegmentedLabeledOption,
+  SegmentedRawOption,
+  SegmentedLabeledOptionWithIcon,
+  SegmentedLabeledOptionWithoutIcon,
+} from './types';
 
 export const toPX = (value?: number) =>
   value !== undefined ? `${value}px` : undefined;
@@ -31,6 +38,12 @@ export function normalizeOptions(options: SegmentedOptions): SegmentedLabeledOpt
       value: option,
     };
   });
+}
+
+export function isSegmentedLabeledOptionWithIcon(
+  option: SegmentedRawOption | SegmentedLabeledOptionWithIcon | SegmentedLabeledOptionWithoutIcon,
+): option is SegmentedLabeledOptionWithIcon {
+  return typeof option === 'object' && !!(option as SegmentedLabeledOptionWithIcon)?.icon;
 }
 
 export const calcThumbStyle = (

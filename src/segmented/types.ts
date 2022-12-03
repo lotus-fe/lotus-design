@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { SizeType } from '../config-provider/SizeContext';
 
 export type ThumbReact = {
   left: number;
@@ -22,9 +23,19 @@ export interface SegmentedLabeledOption {
 
 export type SegmentedOptions = (SegmentedRawOption | SegmentedLabeledOption)[];
 
+export interface SegmentedLabeledOptionWithoutIcon extends SegmentedLabeledOption {
+  label: SegmentedLabeledOption['label'];
+}
+
+export interface SegmentedLabeledOptionWithIcon extends Omit<SegmentedLabeledOption, 'label'> {
+  label?: SegmentedLabeledOption['label'];
+  /** Set icon for Segmented item */
+  icon: React.ReactNode;
+}
+
 export interface SegmentedProps
-  extends Omit<React.HTMLProps<HTMLDivElement>, 'onChange'> {
-  options: SegmentedOptions;
+  extends Omit<React.HTMLProps<HTMLDivElement>, 'onChange' | 'size'> {
+  options: (SegmentedRawOption | SegmentedLabeledOption)[];
   defaultValue?: SegmentedValue;
   value?: SegmentedValue;
   onChange?: (value: SegmentedValue) => void;
@@ -32,4 +43,8 @@ export interface SegmentedProps
   prefixCls?: string;
   direction?: 'ltr' | 'rtl';
   motionName?: string;
+  /** Option to fit width to its parent's width */
+  block?: boolean;
+  /** Option to control the display size */
+  size?: SizeType;
 }
