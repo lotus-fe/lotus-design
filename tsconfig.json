@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "paths": {
+      "lotus-design": ["src/index.tsx"],
+      "lotus-design/es/*": ["src/*"],
+      "lotus-design/lib/*": ["src/*"],
+      "lotus-design/locale/*": ["src/locale/*"]
+    },
+  },
+  "include": [
+    "typings.d.ts",
+    "**/src/**/*",
+    "**/docs/**/*",
+    "scripts/**/*",
+    "**/demos",
+    ".eslintrc.js",
+    "tests",
+    "jest.config.js",
+    "**/fixtures",
+    "./tests/no-duplicated.ts",
+    "packages/descriptions/src/demos/.tsx"
+  ]
+}

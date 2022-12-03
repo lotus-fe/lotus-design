@@ -1,0 +1,44 @@
+{
+  "name": "lotus-design",
+  "version": "1.0.0",
+  "description": "An enterprise-class UI design language and React components implementation",
+  "scripts": {
+    "start": "dumi dev"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "homepage": "https://lotus-design.xingkang.wang",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "dependencies": {
+    "@ant-design/colors": "^6.0.0",
+    "@ant-design/cssinjs": "^1.1.0",
+    "@ctrl/tinycolor": "^3.4.1",
+    "@pansy/shared": "^1.5.0",
+    "@pansy/react-hooks": "^1.0.1",
+    "react-is": "^16.12.0",
+    "rc-motion": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.26",
+    "@types/react-is": "^17.0.3",
+    "@types/react-dom": "^18.0.9",
+    "@types/node": "^18.11.10",
+    "cross-env": "^7.0.3",
+    "dumi": "^2.0.10",
+    "husky": "^8.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.3"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "Firefox ESR",
+    "> 1%",
+    "ie >= 11"
+  ]
+}
